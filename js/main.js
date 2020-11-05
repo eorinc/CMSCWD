@@ -18,32 +18,32 @@ var imagery = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-v9/
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
 });
 
-var mncomposite = L.tileLayer.wms("//geoint.lmic.state.mn.us/cgi-bin/mncomp?VERSION%3D1.3.0", {
+var mncomposite = L.tileLayer.wms("https://imageserver.gisdata.mn.gov/cgi-bin/mncomp?", {
     layers: 'mncomp',
     format: 'image/jpeg',
     transpartent: true,
 });
 
-var hillshade = L.tileLayer.wms("//geoint.lmic.state.mn.us/cgi-bin/wms?", {
+var hillshade = L.tileLayer.wms("https://imageserver.gisdata.mn.gov/cgi-bin/wms?", {
     layers: 'hillshd',
     format: 'image/jpeg',
     transparent: true,
 });
 
-var quad250 = L.tileLayer.wms("//geoint.lmic.state.mn.us/cgi-bin/wmsz?", {
+var quad250 = L.tileLayer.wms("https://imageserver.gisdata.mn.gov/cgi-bin/wmsz?", {
     layers: 'drg250',
     format: 'image/png',
     transparent: true,
 });
 
-var quad100 = L.tileLayer.wms("//geoint.lmic.state.mn.us/cgi-bin/wmsz?", {
+var quad100 = L.tileLayer.wms("https://imageserver.gisdata.mn.gov/cgi-bin/wmsz?", {
     layers: 'drg100',
     format: 'image/png',
     transparent: true,
 });
 
 
-var quad24 = L.tileLayer.wms("//geoint.lmic.state.mn.us/cgi-bin/wmsz?", {
+var quad24 = L.tileLayer.wms("https://imageserver.gisdata.mn.gov/cgi-bin/wmsz?", {
     layers: 'drg24',
     format: 'image/png',
     transparent: true,
@@ -123,6 +123,36 @@ var pattern_gwdepbuff = new L.StripePattern({
 pattern_gwdepbuff.addTo(map);
 
 // Leaflet Browser Print
+//L.Control.BrowserPrint.Utils.registerLayer(
+//    L.StripePattern,
+//    'L.StripePattern',
+//    function (layer, utils) {
+//        return new L.StripePattern(utils.cloneOptions(layer.options)); 
+//    }
+//);
+
+
+//L.Control.BrowserPrint.Utils.registerLayer(
+//    L.StripePattern,
+//    'L.StripePattern',
+//    function (layer, utils) {
+////        console.log(layer.options);
+//        return new L.StripePattern(layer.options); // You may need to play here to create proper new object.
+//    }
+//);
+
+
+
+//L.Control.BrowserPrint.Utils.registerLayer(
+//    L.StripePattern,
+//    'L.StripePattern',
+//    function (layer, utils) {
+//        var pattern = new L.StripePattern(layer.options);
+//        pattern.addLayers(utils.cloneLayer(layer));
+//        return pattern
+//    }
+//);
+
 
 L.control.browserPrint({
     title: 'Print Map',
@@ -151,7 +181,6 @@ map.on("browser-print-start", function (e) {
         maxWidth: 200
     }).addTo(e.printMap);
     addPrintLegend(e);
-    pattern_gwdepbuff.addTo(e.printMap);
     L.latlngGraticule({
         showLabel: true,
         dashArray: [5, 5],
@@ -566,7 +595,18 @@ function stylebuffwtrcrse(feature) {
 //pattern_gwdepbuff.addTo(map);
 
 
+
+
 function stylegwdepbuff(feature) {
+    var pattern_gwdepbuff = new L.StripePattern({
+        weight: 2,
+        spaceWeight: 10,
+        color: '#000000',
+        opacity: 1.0,
+        spaceOpacity: .5,
+        angle: 315
+    });
+    pattern_gwdepbuff.addTo(map);
     var x = document.getElementById("fillop_gwdepbuff");
     var currentfillop = x.value;
     return {
@@ -1518,9 +1558,9 @@ $(document).ready(function () {
                                 attribution: '',
                                 interactive: true,
                                 style: styleparcels,
-//                                onEachFeature: function (f, l) {
-        //                                    l.bindPopup('<pre>' + JSON.stringify(f.properties, null, ' ').replace(/[\{\}"]/g, '') + '</pre>');
-        //                                }
+                                //                                onEachFeature: function (f, l) {
+                                //                                    l.bindPopup('<pre>' + JSON.stringify(f.properties, null, ' ').replace(/[\{\}"]/g, '') + '</pre>');
+                                //                                }
                                 //                                onEachFeature: function (feature, layer) {
                                 //                                    layer.bindPopup('<p><b><i> Impaired for: </b>' + feature.properties.imp_param + '</i></p>');
                                 //                                    layer.on({
