@@ -379,6 +379,13 @@ div > p > input[type="checkbox"]:hover {
     text-shadow: 1.5px -.5px lightgray;
 }
 
+/*leaflet popup */
+
+.leaflet-popup-content {
+/*    max-height: 100px !important;*/
+    overflow: auto;
+}
+
 /*
 .btn-info:hover {
     background-color: #A5A16D;

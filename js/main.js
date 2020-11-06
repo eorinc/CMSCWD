@@ -136,11 +136,10 @@ pattern_gwdepbuff.addTo(map);
 //    L.StripePattern,
 //    'L.StripePattern',
 //    function (layer, utils) {
-////        console.log(layer.options);
+//        //        console.log(layer.options);
 //        return new L.StripePattern(layer.options); // You may need to play here to create proper new object.
 //    }
 //);
-
 
 
 //L.Control.BrowserPrint.Utils.registerLayer(
@@ -241,13 +240,13 @@ var a_huc8 = 'minnesota:WBD_HU8'; //USGS HUC 8
 var a_huc10 = 'minnesota:WBD_HU10'; //USGS HUC 10
 var a_huc12 = 'minnesota:WBD_HU12'; //USGS HUC 12
 
+var a_streams = 'cmscwd:surface_water_course_centerline';
 
 var a_gwdepbuff = 'cmscwd:GWDep_buffer';
 var a_gwdeppoly = 'cmscwd:GWDep_poly_diss';
-var a_mwmo_wetland = 'cmscwd:MWMO_wetland_data_20Jan09';
-var a_mnram = 'cmscwd:cmwd_mnram_11oct06';
+var a_mnram = 'cmscwd:wetland_mgmt_class_merge';
 var a_mlccs = 'cmscwd:mlccs_cmswd_pol_jur_mv';
-var a_parcels = 'cmscwd:parcels_wash_co_mv';
+var a_parcels = 'cmscwd:parcels_wash_co_all_mv';
 var a_pwi_buffer = 'cmscwd:pwi_buffer_area_esimate';
 var a_subcatch = 'cmscwd:subcatchments_20201021';
 
@@ -384,8 +383,8 @@ var url_huc12 = getMN_URL(a_huc12);
 
 
 ////// *** Hydrology Layers *** /////
-
-
+var streams;
+var url_streams = getCMSCWD_URL(a_streams);
 //var cONUS;
 //var url_cONUS = getCLFL_URL(a_cONUS);
 //var nwi_cir;
@@ -409,10 +408,6 @@ var gwdepbuff;
 var url_gwdepbuff = getCMSCWD_URL(a_gwdepbuff);
 var gwdeppoly;
 var url_gwdeppoly = getCMSCWD_URL(a_gwdeppoly);
-var mwmo_wetland;
-var url_mwmo_wetland = getCMSCWD_URL(a_mwmo_wetland);
-var mwmo_wetland;
-var url_mwmo_wetland = getCMSCWD_URL(a_mwmo_wetland);
 var mnram;
 var url_mnram = getCMSCWD_URL(a_mnram);
 var mlccs = getCMSCWD_WMS_URL(a_mlccs);
@@ -424,6 +419,7 @@ var pwi_buffer;
 var url_pwi_buffer = getCMSCWD_URL(a_pwi_buffer);
 var subcatch;
 var url_subcatch = getCMSCWD_URL(a_subcatch);
+
 
 
 //var wildLife = getTilelayer(a_wildLife);
@@ -538,6 +534,15 @@ function stylehuc12(feature) {
 }
 
 
+function stylestreams(feature) {
+    var y = document.getElementById("boundop_huc8");
+    var currentboundop = y.value;
+    return {
+        "color": "#a6cee3", // #0074c2
+        "weight": 3,
+        "opacity": currentboundop,
+    };
+}
 
 function stylebuffbasins(feature) {
     var x = document.getElementById("fillop_buffbasins");
@@ -598,20 +603,25 @@ function stylebuffwtrcrse(feature) {
 
 
 function stylegwdepbuff(feature) {
-    var pattern_gwdepbuff = new L.StripePattern({
-        weight: 2,
-        spaceWeight: 10,
-        color: '#000000',
-        opacity: 1.0,
-        spaceOpacity: .5,
-        angle: 315
-    });
-    pattern_gwdepbuff.addTo(map);
+    //    var pattern_gwdepbuff = new L.StripePattern({
+    //        weight: 2,
+    //        spaceWeight: 10,
+    //        color: '#000000',
+    //        opacity: 1.0,
+    //        spaceOpacity: .5,
+    //        angle: 315
+    //    });
+    //    pattern_gwdepbuff.addTo(map);
     var x = document.getElementById("fillop_gwdepbuff");
+    var y = document.getElementById("boundop_gwdepbuff");
+    var currentboundop = y.value;
     var currentfillop = x.value;
     return {
         fillOpacity: currentfillop,
-        stroke: false,
+        opacity: currentboundop,
+        color: '#000000',
+        weight: 2,
+        //        stroke: false,
         interactive: true,
         fillPattern: pattern_gwdepbuff
     };
@@ -678,8 +688,8 @@ function stylesubcatch(feature) {
     var currentfillop = x.value;
     var currentboundop = y.value;
     return {
-        "color": "#ee9440",
-        "fillColor": '#fdae61',
+        "color": "#295f82",
+        "fillColor": '#1f78b4',
         "weight": 2,
         "fillOpacity": currentfillop,
         "opacity": currentboundop,
@@ -710,10 +720,10 @@ function stylemnram(feature) {
     var currentboundop = y.value;
     type = feature.properties.mgmt_class;
     var colorToUse;
-    if (type === "1") colorToUse = '#c7e9c0';
-    else if (type === "2") colorToUse = '#74c476';
-    else if (type === "3") colorToUse = '#41ab5d';
-    else if (type === "4") colorToUse = '#238b45';
+    if (type === "1") colorToUse = '#f7fcf5';
+    else if (type === "2") colorToUse = '#b2e0ab';
+    else if (type === "3") colorToUse = '#3da75a';
+    else if (type === "4") colorToUse = '#00441b';
     else colorToUse = "transparent";
     return {
         "color": colorToUse,
@@ -724,25 +734,7 @@ function stylemnram(feature) {
     };
 }
 
-function stylemwmo_wetland(feature) {
-    var x = document.getElementById("fillop_mwmo_wetland");
-    var y = document.getElementById("boundop_mwmo_wetland");
-    var currentfillop = x.value;
-    var currentboundop = y.value;
-    type = feature.properties.mgmt_class;
-    var colorToUse;
-    if (type === "1") colorToUse = '#c7e9c0';
-    else if (type === "2") colorToUse = '#74c476';
-    else if (type === "3") colorToUse = '#41ab5d';
-    else colorToUse = "transparent";
-    return {
-        "color": colorToUse,
-        "fillColor": colorToUse,
-        "weight": 2,
-        "fillOpacity": currentfillop,
-        "opacity": currentboundop,
-    };
-}
+
 //function stylemlccs(feature) {
 //    type = feature.properties.carto;
 //    var colorToUse;
@@ -964,6 +956,18 @@ var legendhuc12 = L.control.htmllegend({
     detectStretched: true,
 });
 
+var legendstreams = L.control.htmllegend({
+    position: 'bottomleft',
+    layer: 'Streams',
+    legends: [{
+        name: 'Streams',
+        elements: [{
+            html: document.querySelector('#streamsLegend').innerHTML
+            }]
+        }],
+    detectStretched: true,
+});
+
 var legendsubcatch = L.control.htmllegend({
     position: 'bottomleft',
     layer: 'Subcatchments',
@@ -1052,17 +1056,6 @@ var legendmnram = L.control.htmllegend({
         name: 'MN Ram',
         elements: [{
             html: document.querySelector('#mnramLegend').innerHTML
-            }]
-        }],
-    detectStretched: true,
-});
-var legendmwmo_wetland = L.control.htmllegend({
-    position: 'bottomleft',
-    layer: 'MWMO Wetland Data',
-    legends: [{
-        name: 'MWMO Wetland Data',
-        elements: [{
-            html: document.querySelector('#mwmo_wetlandLegend').innerHTML
             }]
         }],
     detectStretched: true,
@@ -1430,6 +1423,42 @@ $(document).ready(function () {
                         }
                     }); //end of call for huc12 variable
                     break;
+                case 'streams_layer':
+                    $.ajax({
+                        url: url_streams,
+                        dataType: 'jsonp',
+                        jsonpCallback: a_streams.replace(":", ""),
+                        success: function (response) {
+                            streams = L.geoJson(response, {
+                                attribution: '',
+                                interactive: true,
+                                style: stylestreams,
+                                onEachFeature: function (feature, layer) {
+                                    layer.bindPopup('<p><i>' +
+                                        feature.properties.name + '</i></p>');
+                                    layer.on({
+                                        mouseover: function (e) {
+                                            layer.setStyle({
+                                                weight: 4,
+                                                color: '#00FFFF',
+                                                opacity: 1
+                                            });
+                                            if (!L.Browser.ie && !L.Browser.opera) {
+                                                layer.bringToFront();
+                                            }
+                                            this.openPopup();
+                                        },
+                                        mouseout: function (e) {
+                                            streams.resetStyle(e.target);
+                                            this.closePopup();
+                                        },
+                                    });
+                                },
+                            });
+                            map.addLayer(streams);
+                        }
+                    }); //end of call for streams variable
+                    break;
                 case 'nwi_cir_layer':
                     console.log(layerClicked);
                     map.addLayer(layerClicked);
@@ -1468,22 +1497,6 @@ $(document).ready(function () {
                             map.addLayer(gwdeppoly);
                         }
                     }); // end of wtrvul call
-                    break;
-                case 'mwmo_wetland_layer':
-                    $.ajax({
-                        url: url_mwmo_wetland,
-                        dataType: 'jsonp',
-                        jsonpCallback: a_mwmo_wetland.replace(":", ""),
-                        success: function (response) {
-                            mwmo_wetland = L.geoJson(response, {
-                                attribution: '',
-                                interactive: true,
-                                style: stylemwmo_wetland,
-                            });
-                            map.addLayer(mwmo_wetland);
-                            //                            console.log(fEMAflood);
-                        }
-                    }); // end of fEMAflood call
                     break;
                 case 'mnram_layer':
                     $.ajax({
@@ -1558,9 +1571,15 @@ $(document).ready(function () {
                                 attribution: '',
                                 interactive: true,
                                 style: styleparcels,
-                                //                                onEachFeature: function (f, l) {
-                                //                                    l.bindPopup('<pre>' + JSON.stringify(f.properties, null, ' ').replace(/[\{\}"]/g, '') + '</pre>');
-                                //                                }
+                                onEachFeature: function (f, l) {
+                                    console.log(f);
+                                    l.bindPopup('<b>Parcel</b><pre>' + JSON.stringify(f.properties, null, ' ').replace(/[\{\}"]/g, '') + '</pre>', {
+                                        autoPan: false,
+                                        keepInView: true,
+                                        maxHeight: 200,
+                                    });
+
+                                }
                                 //                                onEachFeature: function (feature, layer) {
                                 //                                    layer.bindPopup('<p><b><i> Impaired for: </b>' + feature.properties.imp_param + '</i></p>');
                                 //                                    layer.on({
@@ -1585,6 +1604,7 @@ $(document).ready(function () {
                                 //                                    });
                                 //                                }
                             });
+                            //                            console.log(parcels);
                             map.addLayer(parcels);
                         }
                     }); // end of impLks call
@@ -1614,6 +1634,15 @@ $(document).ready(function () {
                                 attribution: '',
                                 interactive: true,
                                 style: stylesubcatch,
+                                onEachFeature: function (f, l) {
+                                    console.log(f);
+                                    l.bindPopup('<b>Subcatchment</b><pre>' + JSON.stringify(f.properties, null, ' ').replace(/[\{\}"]/g, '') + '</pre>', {
+                                        autoPan: false,
+                                        keepInView: true,
+                                        maxHeight: 200,
+                                    })
+                                }
+
                             });
                             map.addLayer(subcatch);
                         }

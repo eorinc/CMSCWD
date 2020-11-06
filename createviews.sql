@@ -209,3 +209,165 @@ from students c
       on a.student_id = c.id and a.subject_id = p.subject_id
    inner join applicationstatus s 
       on s.id = a.status_id;
+      
+      /* demo */
+CREATE MATERIALIZED VIEW minnesota.cntybnds_HenRam_mv
+AS
+select *
+from minnesota.county_boundaries
+WHERE minnesota.county_boundaries.county_nam = 'Hennepin' OR minnesota.county_boundaries.county_nam = 'Ramsey'
+
+
+SELECT *
+FROM minnesota.nwi_2009_to_2014
+WHERE wetland_type = 'Freshwater Emergent Wetland' OR wetland_type = 'Freshwater Forested/Shrub Wetland'
+
+CREATE MATERIALIZED VIEW cmscwd.mlccs_cmswd_pol_jur_mv AS
+
+/* only gets you the geometry */
+select ST_Intersection (r.geom, s.geom) as clipped
+FROM cmscwd."CMWD_political_jurisdiction" as s, minnesota."landcover_minnesota_land_cover_classification_system" as r
+WHERE ST_Intersects(s.geom, r.geom)
+
+
+CREATE MATERIALIZED VIEW cmscwd.mlccs_cmswd_pol_jur_mv AS
+/*This seemed to work */
+select r.id, r.geom, r.carto, s.geom
+FROM cmscwd."CMWD_political_jurisdiction" as s, minnesota."landcover_minnesota_land_cover_classification_system" as r
+WHERE ST_Intersects (r.geom, s.geom);
+
+
+
+select r.id, r.geom, r.carto, s.geom
+FROM cmscwd."CMWD_political_jurisdiction" as s, minnesota."landcover_minnesota_land_cover_classification_system" as r
+WHERE ST_Intersects (r.geom, s.geom);
+
+select r.id, r.geom, r.pin, s.geom as bound_geom
+FROM cmscwd."CMWD_political_jurisdiction" as s, minnesota."ParcelsWashington" as r
+WHERE ST_Intersects (r.geom, s.geom);
+
+select r.*, s.geom as bound_geom
+FROM cmscwd."CMWD_political_jurisdiction" as s, minnesota."ParcelsWashington" as r
+WHERE ST_Intersects (r.geom, s.geom);
+
+
+select r.id, r.geom, r.hydrolgrp, s.geom as bound_geom
+FROM cmscwd."CMWD_political_jurisdiction" as s, minnesota."gssurgo_soilsgrp" as r
+WHERE ST_Intersects (r.geom, s.geom);
+
+gssurgo_hydric_cmscwd_mv
+
+select r.id, r.geom, r.hydrcratng_pp, s.geom as bound_geom
+FROM cmscwd."CMWD_political_jurisdiction" as s, minnesota."gssurgo_hydric_mv" as r
+WHERE ST_Intersects (r.geom, s.geom);
+
+select r.id, r.geom, r.circ39_class, s.geom as bound_geom
+FROM cmscwd."CMWD_political_jurisdiction" as s, minnesota."nwi_2009_to_2014" as r
+WHERE ST_Intersects (r.geom, s.geom);
+
+
+REFRESH MATERIALIZED VIEW cmscwd.parcels_wash_co_all_mv;
+
+select cmscwd.parcels_wash_co_mv.id, cmscwd.parcels_wash_co_mv.geom, cmscwd.parcels_wash_co_mv.county_pin, cmscwd.parcels_wash_co_mv.state_pin, cmscwd.parcels_wash_co_mv.anumberpre, 
+cmscwd.parcels_wash_co_mv.anumber,
+cmscwd.parcels_wash_co_mv.anumbersuf,
+cmscwd.parcels_wash_co_mv.st_pre_mod,
+cmscwd.parcels_wash_co_mv.st_pre_dir,
+cmscwd.parcels_wash_co_mv.st_pre_typ,
+cmscwd.parcels_wash_co_mv.st_pre_sep,
+cmscwd.parcels_wash_co_mv.st_name,
+cmscwd.parcels_wash_co_mv.st_pos_typ,
+cmscwd.parcels_wash_co_mv.st_pos_dir,
+cmscwd.parcels_wash_co_mv.st_pos_mod,
+cmscwd.parcels_wash_co_mv.sub_type1,
+cmscwd.parcels_wash_co_mv.sub_id1,
+cmscwd.parcels_wash_co_mv.sub_type2,
+cmscwd.parcels_wash_co_mv.sub_id2,
+cmscwd.parcels_wash_co_mv.zip,
+cmscwd.parcels_wash_co_mv.zip4,
+cmscwd.parcels_wash_co_mv.ctu_name,
+cmscwd.parcels_wash_co_mv.ctu_id_txt,
+cmscwd.parcels_wash_co_mv.postcomm,
+cmscwd.parcels_wash_co_mv.co_code,
+cmscwd.parcels_wash_co_mv.co_name,
+cmscwd.parcels_wash_co_mv.state_code,
+cmscwd.parcels_wash_co_mv.lot,
+cmscwd.parcels_wash_co_mv.block,
+cmscwd.parcels_wash_co_mv.plat_name,
+cmscwd.parcels_wash_co_mv.owner_name,
+cmscwd.parcels_wash_co_mv.owner_more,
+cmscwd.parcels_wash_co_mv.own_add_l1,
+cmscwd.parcels_wash_co_mv.own_add_l2,
+cmscwd.parcels_wash_co_mv.own_add_l3,
+cmscwd.parcels_wash_co_mv.own_add_l4,
+cmscwd.parcels_wash_co_mv.tax_name,
+cmscwd.parcels_wash_co_mv.tax_add_l1,
+cmscwd.parcels_wash_co_mv.tax_add_l2,
+cmscwd.parcels_wash_co_mv.tax_add_l3,
+cmscwd.parcels_wash_co_mv.tax_add_l4,
+cmscwd.parcels_wash_co_mv.landmark,
+cmscwd.parcels_wash_co_mv.homestead,
+cmscwd.parcels_wash_co_mv.acres_poly,
+cmscwd.parcels_wash_co_mv.acres_deed,
+cmscwd.parcels_wash_co_mv.emv_land,
+cmscwd.parcels_wash_co_mv.emv_bldg,
+cmscwd.parcels_wash_co_mv.emv_total,
+cmscwd.parcels_wash_co_mv.tax_year,
+cmscwd.parcels_wash_co_mv.mkt_year,
+cmscwd.parcels_wash_co_mv.tax_capac,
+cmscwd.parcels_wash_co_mv.total_tax,
+cmscwd.parcels_wash_co_mv.spec_asses,
+cmscwd.parcels_wash_co_mv.useclass1,
+cmscwd.parcels_wash_co_mv.useclass2,
+cmscwd.parcels_wash_co_mv.useclass3,
+cmscwd.parcels_wash_co_mv.useclass4,
+cmscwd.parcels_wash_co_mv.multi_uses,
+cmscwd.parcels_wash_co_mv.tax_exempt,
+cmscwd.parcels_wash_co_mv.xuseclass1,
+cmscwd.parcels_wash_co_mv.xuseclass2,
+cmscwd.parcels_wash_co_mv.xuseclass3,
+cmscwd.parcels_wash_co_mv.xuseclass4,
+cmscwd.parcels_wash_co_mv.dwell_type,
+cmscwd.parcels_wash_co_mv.home_style,
+cmscwd.parcels_wash_co_mv.fin_sq_ft,
+cmscwd.parcels_wash_co_mv.garage,
+cmscwd.parcels_wash_co_mv.garagesqft,
+cmscwd.parcels_wash_co_mv.basement,
+cmscwd.parcels_wash_co_mv.heating,
+cmscwd.parcels_wash_co_mv.cooling,
+cmscwd.parcels_wash_co_mv.year_built,
+cmscwd.parcels_wash_co_mv.num_units,
+cmscwd.parcels_wash_co_mv.sale_date,
+cmscwd.parcels_wash_co_mv.sale_value,
+cmscwd.parcels_wash_co_mv.green_acre,
+cmscwd.parcels_wash_co_mv.open_space,
+cmscwd.parcels_wash_co_mv.ag_preserv,
+cmscwd.parcels_wash_co_mv.agpre_enrd,
+cmscwd.parcels_wash_co_mv.agpre_expd,
+cmscwd.parcels_wash_co_mv.abb_legal,
+cmscwd.parcels_wash_co_mv.edit_date,
+cmscwd.parcels_wash_co_mv.exp_date,
+cmscwd.parcels_wash_co_mv.polyptrel,
+cmscwd.parcels_wash_co_mv.n_standard,
+cmscwd.parcels_wash_co_mv.ownership,
+cmscwd.parcels_wash_co_mv.school_dst,
+cmscwd.parcels_wash_co_mv.wshd_dst,
+cmscwd.parcels_wash_co_mv.section,
+cmscwd.parcels_wash_co_mv.township,
+cmscwd.parcels_wash_co_mv.range,
+cmscwd.parcels_wash_co_mv.range_dir,
+cmscwd.parcels_wash_co_mv.prin_mer,
+cmscwd.parcels_wash_co_mv.pin,
+cmscwd.parcels_wash_co_mv.viewid,
+cmscwd.parcels_wash_co_mv.shape_leng,
+cmscwd.parcels_wash_co_mv.shape_area
+FROM cmscwd.parcels_wash_co_mv
+
+
+/* Join mnram for MWMO and CMWD, Wetland Management Category  */
+
+SELECT cmscwd.cmwd_mnram_11oct06.id as cmwd_id, cmscwd."MWMO_wetland_data_20Jan09".id as mwmo_id, cmscwd.cmwd_mnram_11oct06.mgmt_class, cmscwd."MWMO_wetland_data_20Jan09".mgmt_class, cmscwd."MWMO_wetland_data_20Jan09".geom, cmscwd.cmwd_mnram_11oct06.geom
+FROM cmscwd.cmwd_mnram_11oct06, cmscwd."MWMO_wetland_data_20Jan09"
+
+
+REFRESH MATERIALIZED VIEW cmscwd.wetland_mgmt_class_mv;

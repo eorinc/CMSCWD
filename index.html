@@ -61,7 +61,7 @@
                 <br>
 
                 <!--                 Boundary Layers -->
-                <h4 class="categoryHead">CMSCWD Specific Layers</h4>
+                <h4 class="categoryHead">CMSCWD Local Data</h4>
 
                 <div class="wrapper">
                     <p class="maplayer"> <input type="checkbox" value="poltJur" id="poltJur_layer" checked> Political Jurisdiction <button class="btn-xs btn-info" type="button" data-toggle="collapse" data-target="#collapsepoltJur" aria-expanded="false" aria-controls="collapsepoltJur" title="Toggle Edit and Legend Control">
@@ -119,7 +119,7 @@
                 </div>
                 <!-- END of Planning Area Mask-->
                 <div class="wrapper">
-                    <p class="maplayer"> <input type="checkbox" value="mnram" id="mnram_layer"> MN Ram <button class="btn-xs btn-info" type="button" data-toggle="collapse" data-target="#collapsemnram" aria-expanded="false" aria-controls="collapsemnram" title="Toggle Edit and Legend Control">
+                    <p class="maplayer"> <input type="checkbox" value="mnram" id="mnram_layer"> Wetland Management Category <button class="btn-xs btn-info" type="button" data-toggle="collapse" data-target="#collapsemnram" aria-expanded="false" aria-controls="collapsemnram" title="Toggle Edit and Legend Control">
                             <span class="sr-only">Expand to Edit </span>
                             <span class="fa fa-plus"></span></button>
                     </p>
@@ -128,16 +128,16 @@
 
                         <div class="card card-body legendcard" id="mnramLegend">
                             <p><svg width="20" height="10">
-                                    <rect width="15" height="10" style="fill:#c7e9c0; stroke-width:2; stroke:#c7e9c0; fill-opacity:0.8" />
+                                    <rect width="15" height="10" style="fill:#f7fcf5; stroke-width:2; stroke:#f7fcf5; fill-opacity:0.8" />
                                 </svg>1 <br>
                                 <svg width="20" height="10">
-                                    <rect width="15" height="10" style="fill:#74c476; stroke-width:2; stroke:#74c476; fill-opacity:0.8" />
+                                    <rect width="15" height="10" style="fill:#b2e0ab; stroke-width:2; stroke:#b2e0ab; fill-opacity:0.8" />
                                 </svg>2 <br>
                                 <svg width="20" height="10">
-                                    <rect width="15" height="10" style="fill:#41ab5d; stroke-width:2; stroke:#41ab5d; fill-opacity:0.8" />
+                                    <rect width="15" height="10" style="fill:#3da75a; stroke-width:2; stroke:#3da75a; fill-opacity:0.8" />
                                 </svg>3 <br>
                                 <svg width="20" height="10">
-                                    <rect width="15" height="10" style="fill:#238b45; stroke-width:2; stroke:#238b45; fill-opacity:0.8" />
+                                    <rect width="15" height="10" style="fill:#00441b; stroke-width:2; stroke:#00441b; fill-opacity:0.8" />
                                 </svg>4
                             </p>
                         </div>
@@ -158,12 +158,13 @@
                 <!--End MN Ram-->
 
 
+                <!--
                 <div class="wrapper">
                     <p class="maplayer"> <input type="checkbox" value="mwmo_wetland" id="mwmo_wetland_layer"> MWMO Wetland <button class="btn-xs btn-info" type="button" data-toggle="collapse" data-target="#collapsemwmo_wetland" aria-expanded="false" aria-controls="collapsemwmo_wetland" title="Toggle Edit and Legend Control">
                             <span class="sr-only">Expand to Edit </span>
                             <span class="fa fa-plus"></span></button>
                     </p>
-                    <!--                COLLAPSED DIV'S-->
+                                    COLLAPSED DIV'S
                     <div class="collapse" id="collapsemwmo_wetland">
 
                         <div class="card card-body legendcard" id="mwmo_wetlandLegend">
@@ -192,6 +193,7 @@
                         </div>
                     </div>
                 </div>
+-->
                 <!--End MWMO Wetland Data-->
 
                 <div class="wrapper">
@@ -202,7 +204,7 @@
                     <div class="collapse" id="collapsesubcatch">
                         <div class="card card-body legendcard" id="subcatchLegend">
                             <p><svg width="20" height="10">
-                                    <rect width="15" height="10" style="fill:#fdae61; fill-opacity:0.5; stroke:#ee9440;" />
+                                    <rect width="15" height="10" style="fill:#1f78b4; fill-opacity:0.5; stroke:#295f82;" />
                                 </svg>Subcatchments</p>
                         </div>
                         <div class="pretty p-switch p-fill legendtoggle">
@@ -293,7 +295,7 @@
                                             <rect x="0" y="0" width="4" height="8" style="fill:#000000;" />
                                         </pattern>
                                     </defs>
-                                    <rect width="15" height="10" style="fill: url(#diagonal-stripes-4-8)" />
+                                    <rect width="15" height="10" style="fill: url(#diagonal-stripes-4-8); stroke-width:2; stroke:#000000;" />
                                 </svg>GW Dep Buff
                             </p>
                         </div>
@@ -314,6 +316,35 @@
                     </div>
                 </div>
                 <!-- END GW DEP Buff-->
+
+                <div class="wrapper">
+                    <p class="maplayer"><input type="checkbox" value="streams" id="streams_layer"> Streams <button class="btn-xs btn-info" type="button" data-toggle="collapse" data-target="#collapsestreams" aria-expanded="false" aria-controls="collapsestreams" title="Toggle Edit and Legend Control">
+                            <span class="sr-only">Expand to Edit </span>
+                            <span class="fa fa-plus"></span></button>
+                    </p>
+                    <!--                COLLAPSED DIV-->
+                    <div class="collapse" id="collapsestreams">
+
+                        <div class="card card-body legendcard" id="streamsLegend">
+                            <p><svg width="20" height="10">
+                                    <rect width="15" height="5" style="fill:#a6cee3;" />
+                                </svg>Streams
+                            </p>
+                        </div>
+                        <div class="pretty p-switch p-fill legendtoggle">
+                            <input type="checkbox" name="#streamsLegend" class="showLegend" value="legendstreams" />
+                            <div class="state">
+                                <label>Show Legend</label>
+                            </div>
+                        </div>
+
+                        <div class="card card-body">
+                            <p>Opacity
+                                <input id="boundop_streams" class="slider" type="range" min="0" max="1" step="0.1" value="1" oninput="updateOpacityBound(this.value, streams)"><span class="range-slider_val"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <!--End Altered Watercourse -->
 
                 <!--------          Hydrology Layers       -------->
 
