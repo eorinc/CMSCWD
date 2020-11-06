@@ -1,2 +1,0 @@
-# CMSCWD
-CMSCWD web map
